@@ -1,22 +1,44 @@
 ---
-title: "agdriftR"
+title: "Tier I AgDrift"
+author: "C. Kuan"
+date: "Thursday, March 03, 2016"
 output: html_document
 ---
 
-Introduction
-================
+| Aerial | Ground | Airblast |
+|--------|--------|----------|
+| Preset Model Runs | Field Data Curve Fit | Field Data Curve Fit |
+| - 4 Drop Size Classes | - 2 Boom Heights | - 5 Orchard Types |
+|                       | - 2 Drop Sizes |                     |
+|-----------------------|----------------|---------------------|
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+# Tier I Aerial
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Tier I Ground
+## Low Boom
+D(x) = c/(1+ax)^b
+where D(x) represents deposition at x downwind distance (ft), and a (ft^-1), b, and c are curve-fitting parameters.
 
-```{r, echo=FALSE, eval = TRUE}
-summary(cars)
+## High Boom
+D(x) = (c/(1+ax)^b) * (1+A exp(-Bx)) 
+where D(x) represents deposition at x downwind distance (ft), and a (ft^-1), b, and c are curve-fitting parameters. The exponential expression is only for x downwind distance > 25 ft.
+
+```{r, eval=TRUE}
+names(df_ground_calc)
+```
+
+# Tier I Airblast
+D(x) = c/(1+ax)^b
+where D(x) represents deposition at x downwind distance (ft), and a (ft^-1), b, and c are curve-fitting parameters.
+
+
+```{r, eval=TRUE}
+names(df_airblast_calc)
 ```
 
 You can also embed plots, for example:
 
-```{r, echo=FALSE, eval = TRUE}
+```{r, echo=FALSE}
 plot(cars)
 ```
 
