@@ -5,6 +5,9 @@ library(xlsx)
 if(Sys.info()[4]=="DZ2626UCKUAN"){
   cdf.path <- "C://Users//ckuan//git//agdriftR//"
 }
+if(Sys.info()[4]=="Ashleys-MacBook-Pro-2.local"){
+  cdf.path <- "~/git/agdriftR/"
+}
 #tom
 if(Sys.info()[4]=="stp-air-3.local" || Sys.info()[4]=="stp-air.local" || Sys.info()[4]=="stp-air"){
   cdf.path <- "~/git/agdriftR/"
@@ -91,26 +94,26 @@ for (x in 0:1000) {
 # AGDRIFT PLOTTING ####
 # Aerial
 ## Very Fine to Fine
-par(mfrow=c(4,1))
-plot(df_python$distance_ft, df_python$pond_aerial_vf2f, main = "vf2f", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,600), ylim=c(0, 0.55))
+par(mfrow=c(4,1), mar=c(2,2,2,2))
+plot(df_python$distance_ft, df_python$pond_aerial_vf2f, main = "vf2f", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300), ylim=c(0, 0.55))
 lines(df_aerial_excel$Distance..ft., df_aerial_excel$Very.Fine.to.Fine, lty=2)
 legend("topleft", c("Python", "Peck"), col = c("black", "black"), lty = c(1, 2), bg = "gray90", cex=0.75)
 ## Fine to medium
-plot(df_python$distance_ft, df_python$pond_aerial_f2m, col = "red", main = "f2m", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,600), ylim=c(0, 0.55))
+plot(df_python$distance_ft, df_python$pond_aerial_f2m, col = "red", main = "f2m", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300), ylim=c(0, 0.55))
 lines(df_aerial_excel$Distance..ft., df_aerial_excel$Fine.to.Med, col = "red", lty=2)
 legend("topleft", c("Python", "Peck"), col = c("red", "red"), lty = c(1, 2), bg = "gray90", cex=0.75)
 ## Medium to coarse
-plot(df_python$distance_ft, df_python$pond_aerial_m2c, col = "green3", type = "l", main = "m2c", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,600), ylim=c(0, 0.55))
+plot(df_python$distance_ft, df_python$pond_aerial_m2c, col = "green3", type = "l", main = "m2c", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300), ylim=c(0, 0.55))
 lines(df_aerial_excel$Distance..ft., df_aerial_excel$Med.to.Coarse, col = "green3", lty=2)
 legend("topleft", c("Python", "Peck"), col = c("green3", "green3"), lty = c(1, 2), bg = "gray90", cex=0.75)
 ## Coarse to very coarse
-plot(df_python$distance_ft, df_python$pond_aerial_c2vc, col = "blue", type = "l", main = "c2vc", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,600), ylim=c(0, 0.55))
+plot(df_python$distance_ft, df_python$pond_aerial_c2vc, col = "blue", type = "l", main = "c2vc", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300), ylim=c(0, 0.55))
 lines(df_aerial_excel$Distance..ft., df_aerial_excel$Coarse.to.VC, col = "blue", lty=2)
 legend("topleft", c("Python", "Peck"), col = c("blue", "blue"), lty = c(1, 2), bg = "gray90", cex=0.75)
 
 # Ground
 ## Low- very fine to fine
-par(mfrow=c(1,5))
+par(mfrow=c(4,1), mar=c(2,2,2,2))
 plot(df_ground_calc$distance_ft, df_ground_calc$ground_low_vf2f_90, main = "Low vf2f", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300))
 lines(df_ground_excel$Distance..ft., df_ground_excel$Low.boom..vf, lty=2)
 lines(df_python$distance_ft, df_python$pond_ground_low_vf2f, lty=4)
@@ -133,30 +136,31 @@ legend("topleft", c("Calc", "Peck", "Python"), col = c("blue", "blue", "blue"), 
 
 # Airblast
 ## orchard
-par(mfrow=c(1,5))
-plot(df_airblast_calc$distance_ft, df_airblast_calc$airblast_orchard_inside, main = "Orchard", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,600))
+par(mfrow=c(5,1), mar = c(2,2,2,2))
+plot(df_airblast_calc$distance_ft, df_airblast_calc$airblast_orchard_inside, main = "Orchard", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,300))
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_orchard_outside, col="blue", lty=2)
 lines(df_python$distance_ft, df_python$pond_airblast_orchard, col = "red", lty=2)
 lines(df_airblast_excel$Distance..ft., df_airblast_excel$Orchard, col = "green3", lty=2)
 legend("topleft", c("Calc- inside", "Calc- outside", "Python", "Peck"), col = c("black", "blue", "red", "green3"), lty = c(1, 2, 2, 2), bg = "gray90", cex=0.75)
 ## Vineyard
-plot(df_airblast_calc$distance_ft, df_airblast_calc$airblast_vineyard_inside, main = "Vineyard", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,600))
+plot(df_airblast_calc$distance_ft, df_airblast_calc$airblast_vineyard_inside, main = "Vineyard", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,300))
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_vineyard_outside, col="blue", lty=2)
 lines(df_python$distance_ft, df_python$pond_airblast_vineyard, col = "red", lty=2)
 lines(df_airblast_excel$Distance..ft., df_airblast_excel$Vineyard, col = "green3", lty=2)
 legend("topleft", c("Calc- inside", "Calc- outside", "Python", "Peck"), col = c("black", "blue", "red", "green3"), lty = c(1, 2, 2, 2), bg = "gray90", cex=0.75)
 ## Normal
-plot(df_airblast_calc$distance_ft, df_airblast_calc$airblast_normal_inside, main = "Normal", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,600))
+plot(df_airblast_calc$distance_ft, df_airblast_calc$airblast_normal_inside, main = "Normal", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,300))
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_normal_outside, col="blue", lty=2)
 lines(df_airblast_excel$Distance..ft., df_airblast_excel$Normal, col = "green3", lty=2)
 legend("topleft", c("Calc- inside", "Calc- outside", "Peck"), col = c("black", "blue", "green3"), lty = c(1, 2, 2), bg = "gray90", cex = 0.75)
 ## Sparse
-plot(df_airblast_calc$distance_ft, df_airblast_calc$airblast_sparse_inside, main = "Sparse", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,600))
+plot(df_airblast_calc$distance_ft, df_airblast_calc$airblast_sparse_inside, main = "Sparse", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,300))
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_sparse_outside, col="blue", lty=2)
 lines(df_airblast_excel$Distance..ft., df_airblast_excel$Sparse, col = "green3", lty=2)
 legend("topleft", c("Calc- inside", "Calc- outside", "Peck"), col = c("black", "blue", "green3"), lty = c(1, 2, 2), bg = "gray90", cex = 0.75)
 ## Dense
-plot(df_airblast_calc$distance_ft, df_airblast_calc$airblast_dense_inside, main = "Dense", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,600))
+plot(df_airblast_calc$distance_ft, df_airblast_calc$airblast_dense_inside, main = "Dense", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,300))
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_dense_outside, col="blue", lty=2)
 lines(df_airblast_excel$Distance..ft., df_airblast_excel$Dense, col = "green3", lty=2)
 legend("topleft", c("Calc- inside", "Calc- outside", "Peck"), col = c("black", "blue", "green3"), lty = c(1, 2, 2), bg = "gray90", cex = 0.75)
+dev.off()
