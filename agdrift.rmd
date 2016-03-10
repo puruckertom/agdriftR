@@ -5,7 +5,32 @@ date: "Thursday, March 03, 2016"
 output: html_document
 ---
 
-```{r Data Sources, eval=TRUE, echo=FALSE, error=FALSE, warning=FALSE}
+Overview
+=========
+### Objective
+```
+In this report, we visualize the available data in an effort to clear up confusion, and define a specific datasource for the Ubertool implementation of AgDrift.
+```
+
+### Sources of data
+```
+There are multiple sources of data for deposition curves of the various AgDrift application methods:
+  + Spreadsheet calculator created by OPP
+  + User's Guide for AgDrift 2.0.07 created by Teske et al in 2003
+  + Current public version of AgDrift 2.1.1
+  + Datasets from the FORTRAN code source of AgDrift
+  
+Many curves that have equal input parameters DO NOT overlap, which causes a disparity between different implementations of AgDrift. Thus, we provide a visual report of the available data to aid the decision-making process.
+```
+
+### Current Ubertool vs. 2012 OPP Memorandum
+```
+The diagrams below depict the current options in the Ubertool web application (grayed) with the recommended options in the 2012 OPP memorandum (underlined).
+```
+![](C:\Users\ckuan\git\agdriftR\AgDrift_selectableproperties_01042016\Slide1.jpg)
+![](C:\Users\ckuan\git\agdriftR\AgDrift_selectableproperties_01042016\Slide2.jpg)
+
+```{r Data Sources, eval=TRUE, echo=FALSE, include=FALSE}
 library(xlsx)
 library(rmarkdown)
 
@@ -105,88 +130,94 @@ for (x in 0:1000) {
 
 *** 
   
-Source           | Peck Excel | User Manual | agdrift.py | fortran2py.py  
-_Plot keyword_   | _Peck_     | _Calc_      | _Python_   | _F2Py_         
------------------|------------|-------------|------------|--------------  
-Aerial vf2f      |x           |             |x           |x               
-Aerial f2m       |x           |             |x           |x               
-Aerial m2c       |x           |             |x           |x               
-Aerial c2vc      |x           |             |x           |x               
-Ground high vf2f |x           |x            |x           |x               
-Ground high f2m  |x           |x            |x           |x               
-Ground low vf2f  |x           |x            |x           |x               
-Ground low f2m   |x           |x            |x           |x               
-Airblast orchard |x           |x            |x           |x               
-Airblast vineyard|x           |x            |x           |x               
-Airblast normal  |x           |x            |            |                 
-Airblast sparse  |x           |x            |            |                
-Airblast dense   |x           |x            |            |                
+####Deposition curves available per AgDrift source:
 
+Source           | Peck Excel | User Manual | Ubertool   | fortran2py.py | AgDrift Model |  
+-----------------|:----------:|:-----------:|:----------:|:-------------:|:-------------:|  
+Aerial vf2f      |  x         |             |  x         |  x            |  x            |  
+Aerial f2m       |  x         |             |  x         |  x            |  x            |  
+Aerial m2c       |  x         |             |  x         |  x            |  x            |  
+Aerial c2vc      |  x         |             |  x         |  x            |  x            |  
+Ground high vf2f |  x         |  x          |  x         |  x            |  x            |  
+Ground high f2m  |  x         |  x          |  x         |  x            |  x            |  
+Ground low vf2f  |  x         |  x          |  x         |  x            |  x            |  
+Ground low f2m   |  x         |  x          |  x         |  x            |  x            |  
+Airblast orchard |  x         |  x          |  x         |  x            |  x            |  
+Airblast vineyard|  x         |  x          |  x         |  x            |  x            |  
+Airblast normal  |  x         |  x          |            |  x            |  x            |  
+Airblast sparse  |  x         |  x          |            |  x            |  x            |  
+Airblast dense   |  x         |  x          |            |  x            |  x            |  
+_Plot keyword_   | _Peck_     | _Calc_      | _Python_   | _FORTRAN_     | _GUI_         |  
 
+  
 Tier I Aerial
 ===========================================
+```
 * Preset Model Runs with 4 Drop Size Classes
     + Very Fine to Fine
     + Fine to Medium
     + Medium to Coarse
     + Coarse to Very Coarse
-  
-***  
-  
+```
+    
 ```{r Tier I Aerial plot, echo=FALSE, fig.width= 10}
 ## Very Fine to Fine
-par(mfrow=c(1,4), mar=c(4,4,1,1))
+par(mfrow=c(2,2), mar=c(4,4,2,1))
 plot(df_python$distance_ft, df_python$pond_aerial_vf2f, main = "vf2f", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300), ylim=c(0, 0.55))
 lines(df_aerial_excel$Distance..ft., df_aerial_excel$Very.Fine.to.Fine, lty=2, col = "blue")
 lines(df_fortran2py$distance_ft, df_fortran2py$Aerial.vf2f, lty = 3, col = "green3")
 lines(df_model_aerial$Distance_ft, df_model_aerial$vf2f_dep, lty = 4, col = "red")
 lines(df_model_aerial$Distance_ft, df_model_aerial$vf2f_ponddep, lty = 5, col = "purple")
-legend("topright", c("Python", "Peck", "Fortran", "GUI", "GUI Ponddep"), col = c("black", "blue","green3", "red", "purple"), lty = c(1, 2, 3, 4,5), bg = "gray90", cex=1)
+legend("topright", c("Python", "Peck", "Fortran", "GUI Dep", "GUI Ponddep"), col = c("black", "blue","green3", "red", "purple"), lty = c(1, 2, 3, 4,5), bg = "gray90", cex=1)
 ## Fine to medium
 plot(df_python$distance_ft, df_python$pond_aerial_f2m, main = "f2m", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300), ylim=c(0, 0.55))
 lines(df_aerial_excel$Distance..ft., df_aerial_excel$Fine.to.Med, lty=2, col = "blue")
 lines(df_fortran2py$distance_ft, df_fortran2py$Aerial.f2m, lty=3, col = "green3")
 lines(df_model_aerial$Distance_ft, df_model_aerial$f2m_dep, lty=4, col = "red")
 lines(df_model_aerial$Distance_ft, df_model_aerial$f2m_ponddep, lty=5, col = "purple")
-legend("topright", c("Python", "Peck", "Fortran", "GUI", "GUI Ponddep"), col = c("black", "blue","green3", "red", "purple"), lty = c(1, 2, 3, 4, 5), bg = "gray90", cex=1)
+legend("topright", c("Python", "Peck", "Fortran", "GUI Dep", "GUI Ponddep"), col = c("black", "blue","green3", "red", "purple"), lty = c(1, 2, 3, 4, 5), bg = "gray90", cex=1)
 ## Medium to coarse
 plot(df_python$distance_ft, df_python$pond_aerial_m2c, type = "l", main = "m2c", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300), ylim=c(0, 0.55))
 lines(df_aerial_excel$Distance..ft., df_aerial_excel$Med.to.Coarse, lty=2, col = "blue")
 lines(df_fortran2py$distance_ft, df_fortran2py$Aerial.m2c, lty=3, col = "green3")
 lines(df_model_aerial$Distance_ft, df_model_aerial$m2c_dep, lty=4, col= "red")
 lines(df_model_aerial$Distance_ft, df_model_aerial$m2c_ponddep, lty=5, col = "purple")
-legend("topright", c("Python", "Peck", "Fortran", "GUI", "GUI Ponddep"), col = c("black", "blue","green3", "red", "purple"), lty = c(1, 2, 3, 4,5), bg = "gray90", cex=1)
+legend("topright", c("Python", "Peck", "Fortran", "GUI Dep", "GUI Ponddep"), col = c("black", "blue","green3", "red", "purple"), lty = c(1, 2, 3, 4,5), bg = "gray90", cex=1)
 ## Coarse to very coarse
 plot(df_python$distance_ft, df_python$pond_aerial_c2vc, type = "l", main = "c2vc", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300), ylim=c(0, 0.55))
 lines(df_aerial_excel$Distance..ft., df_aerial_excel$Coarse.to.VC, lty=2, col ="blue")
 lines(df_fortran2py$distance_ft, df_fortran2py$aerial.c2vc, lty = 3, col="green3")
 lines(df_model_aerial$Distance_ft, df_model_aerial$c2vc_dep, lty=4, col = "red")
 lines(df_model_aerial$Distance_ft, df_model_aerial$c2vc_ponddep, lty=5, col ="purple")
-legend("topright", c("Python", "Peck", "Fortran", "GUI", "GUI Ponddep"), col = c("black", "blue","green3", "red", "purple"), lty = c(1, 2, 3,4,5), bg = "gray90", cex=1)
+legend("topright", c("Python", "Peck", "Fortran", "GUI Dep", "GUI Ponddep"), col = c("black", "blue","green3", "red", "purple"), lty = c(1, 2, 3,4,5), bg = "gray90", cex=1)
 ```
 
 ***
 
 Tier I Ground
 =================================================================
+```
 * Field data curve fits with 2 Drop Size Classes at 2 Boom Heights
     + Very Fine to Fine - Low and High
     + Fine to Medium Coarse - Low and High
-  
-##Low Boom
+
+**"Calc 50" and "Calc 90" refer to values in the 50th and 90th percentiles, respectively.**
+```
+
+###Low Boom
+```
 A curve-fitting expression to describe the downwind deposition of the 'ground spray' method was developed based on two field studies performed by the Spray Drift Task Force in 1995.   $D(x) = c/(1+ax)^{b}$, where D(x) represents deposition at x downwind distance (ft), and a (ft^-1), b, and c are curve-fitting parameters.
-
-##High Boom
-A high-boom model was developed by extending the expression of the low-boom depostion model to:  $D(x) = (c/(1+ax)^{b}) * (1+A exp(-Bx))$, where D(x) represents deposition at x downwind distance (ft), and a (ft^-1), b, and c are curve-fitting parameters. The exponential expression is only for x downwind distance > 25 ft.  
-
-***"Calc 50" and "Calc 90" refer to values in the 50^th^ and 90^th^ percentiles, respectively.***
-
-***
-
+```
+###High Boom
+```
+A high-boom model was developed by extending the expression of the low-boom depostion model to:  $D(x) = (c/(1+ax)^{b}) * (1+A exp(-Bx))$, where D(x) represents deposition at x downwind distance (ft), and a (ft^-1), b, and c are curve-fitting parameters. The exponential expression is only for x downwind distance > 25 ft.
+```
+  
+      
 ```{r Tier I Ground plot, echo=FALSE, fig.width=10}
 # Ground
 ## Low- very fine to fine
-par(mfrow=c(1,4), mar=c(4,4,1,1))
+par(mfrow=c(2,2), mar=c(4,4,2,1))
 plot(df_ground_excel$Distance..ft., df_ground_excel$Low.boom..vf, main = "Low vf2f", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300),ylim=c(0,0.3))
 lines(df_ground_calc$distance_ft, df_ground_calc$ground_low_vf2f_90, lty=2, col = "blue")
 lines(df_ground_calc$distance_ft, df_ground_calc$ground_low_vf2f_50, lty=2, col = "green3")
@@ -196,7 +227,7 @@ lines(df_model_ground$Distance_ft, df_model_ground$low_vf2f_90_dep, lty = 5, col
 lines(df_model_ground$Distance_ft, df_model_ground$low_vf2f_50_dep, lty = 5, col = 74)
 lines(df_model_ground$Distance_ft, df_model_ground$low_vf2f_90_ponddep, lty = 6, col =75)
 lines(df_model_ground$Distance_ft, df_model_ground$low_vf2f_50_ponddep, lty = 6, col = 565)
-legend("topright", c("Peck", "Calc 90", "Calc 50", "Fortran", "Python", "GUI 90", "GUI 50", "GUI 90 Ponddep", "GUI 50 Ponddep"), col = c("black", "blue","green3", "red", "purple", "orange", 74, 75, 565), lty = c(1, 2, 2, 3, 4, 5,5,6,6), bg = "gray90", cex = 1)
+legend("topright", c("Peck", "Calc 90", "Calc 50", "Fortran", "Python", "GUI 90 Dep", "GUI 50 Dep", "GUI 90 Ponddep", "GUI 50 Ponddep"), col = c("black", "blue","green3", "red", "purple", "orange", 74, 75, 565), lty = c(1, 2, 2, 3, 4, 5,5,6,6), bg = "gray90", cex = 0.75)
 ## Low- fine to medium coarse
 plot(df_ground_excel$Distance..ft., df_ground_excel$low.boom..fmc, main = "Low f2mc", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300),ylim=c(0,0.3))
 lines(df_ground_calc$distance_ft, df_ground_calc$ground_low_f2mc_90, col = "blue", lty=2)
@@ -207,7 +238,7 @@ lines(df_model_ground$Distance_ft, df_model_ground$low_f2m_90_dep, lty = 5, col 
 lines(df_model_ground$Distance_ft, df_model_ground$low_f2m_50_dep, lty = 5, col = 74)
 lines(df_model_ground$Distance_ft, df_model_ground$low_f2m_90_ponddep, lty = 6, col =75)
 lines(df_model_ground$Distance_ft, df_model_ground$low_f2m_50_ponddep, lty = 6, col = 565)
-legend("topright", c("Peck", "Calc 90","Calc 50", "Fortran", "Python", "GUI 90", "GUI 50", "GUI 90 Ponddep", "GUI 50 Ponddep"), col = c("black", "blue","green3", "red", "purple", "orange", 74, 75, 565), lty = c(1, 2, 2, 3, 4, 5,5,6,6), bg = "gray90", cex = 1)
+legend("topright", c("Peck", "Calc 90","Calc 50", "Fortran", "Python", "GUI 90 Dep", "GUI 50 Dep", "GUI 90 Ponddep", "GUI 50 Ponddep"), col = c("black", "blue","green3", "red", "purple", "orange", 74, 75, 565), lty = c(1, 2, 2, 3, 4, 5,5,6,6), bg = "gray90", cex = 0.75)
 ## High- very fine to fine
 plot(df_ground_excel$Distance..ft., df_ground_excel$High.boom..vf, main = "High Vf2f", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300),ylim=c(0,0.3))
 lines(df_ground_calc$distance_ft, df_ground_calc$ground_high_vf2f_90, col = "blue", lty=2)
@@ -218,7 +249,7 @@ lines(df_model_ground$Distance_ft, df_model_ground$high_vf2f_90_dep, lty = 5, co
 lines(df_model_ground$Distance_ft, df_model_ground$high_vf2f_50_dep, lty = 5, col = 74)
 lines(df_model_ground$Distance_ft, df_model_ground$high_vf2f_90_ponddep, lty = 6, col =75)
 lines(df_model_ground$Distance_ft, df_model_ground$high_vf2f_50_ponddep, lty = 6, col = 565)
-legend("topright", c("Peck","Calc 90", "Calc 50", "Fortran", "Python", "GUI 90", "GUI 50", "GUI 90 Ponddep", "GUI 50 Ponddep"), col = c("black", "blue","green3", "red", "purple", "orange", 74, 75, 565), lty = c(1, 2, 2, 3, 4, 5,5,6,6), bg = "gray90", cex = 1)
+legend("topright", c("Peck","Calc 90", "Calc 50", "Fortran", "Python", "GUI 90 Dep", "GUI 50 Dep", "GUI 90 Ponddep", "GUI 50 Ponddep"), col = c("black", "blue","green3", "red", "purple", "orange", 74, 75, 565), lty = c(1, 2, 2, 3, 4, 5,5,6,6), bg = "gray90", cex = 0.75)
 ## High- fine to medium coarse
 plot(df_ground_excel$Distance..ft., df_ground_excel$high.boom..fmc, main = "High f2mc", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition",xlim=c(0,300),ylim=c(0,0.3))
 lines(df_ground_calc$distance_ft, df_ground_calc$ground_high_f2mc_90, col = "blue", lty=2)
@@ -229,13 +260,14 @@ lines(df_model_ground$Distance_ft, df_model_ground$high_f2m_90_dep, lty = 5, col
 lines(df_model_ground$Distance_ft, df_model_ground$high_f2m_50_dep, lty = 5, col = 74)
 lines(df_model_ground$Distance_ft, df_model_ground$high_f2m_90_ponddep, lty = 6, col =75)
 lines(df_model_ground$Distance_ft, df_model_ground$high_f2m_50_ponddep, lty = 6, col = 565)
-legend("topright", c("Peck", "Calc 90", "Calc 50", "Fortran", "Python", "GUI 90", "GUI 50", "GUI 90 Ponddep", "GUI 50 Ponddep"), col = c("black", "blue","green3", "red", "purple", "orange", 74, 75, 565), lty = c(1, 2, 2, 3, 4, 5,5,6,6), bg = "gray90", cex = 1)
+legend("topright", c("Peck", "Calc 90", "Calc 50", "Fortran", "Python", "GUI 90 Dep", "GUI 50 Dep", "GUI 90 Ponddep", "GUI 50 Ponddep"), col = c("black", "blue","green3", "red", "purple", "orange", 74, 75, 565), lty = c(1, 2, 2, 3, 4, 5,5,6,6), bg = "gray90", cex = 0.75)
 ```
 
 ***
 
 Tier I Airblast
 =========================================
+```
 * Field Data Curve Fit with 5 orchard types
     + Orchard
     + Vineyard
@@ -245,49 +277,58 @@ Tier I Airblast
 
 A curve-fitting expression to describe the downwind deposition of the 'airblast' method was developed based on several field studies performed by the Spray Drift Task Force in 1995.   $D(x) = c/(1+ax)^{b}$, where D(x) represents deposition at x downwind distance (ft), and a (ft^-1), b, and c are curve-fitting parameters. 
 
-***"Inside vs. Outside" refers to whether the treatment was applied inside or outside the rows of trees in the field study.***
-
-***
-
-```{r Tier I Airblast plot, echo=FALSE, fig.width=10}
+**"Inside vs. Outside" refers to whether the treatment was applied inside or outside the rows of trees in the field study.**
+```
+  
+  
+```{r Tier I Airblast plot, echo=FALSE, fig.width=10, fig.height=12}
 ## orchard
-par(mfrow=c(1,5), mar = c(4,4,1,1))
-plot(df_airblast_excel$Distance..ft., df_airblast_excel$Orchard, main = "Orchard", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,300))
+par(mfrow=c(5,1), mar = c(4,4,2,1))
+plot(df_airblast_excel$Distance..ft., df_airblast_excel$Orchard, main = "Orchard", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,250))
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_orchard_outside, col="blue", lty=2)
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_orchard_inside, col = "green3", lty=2)
 lines(df_python$distance_ft, df_python$pond_airblast_orchard, col = "red", lty=3)
 lines(df_fortran2py$distance_ft, df_fortran2py$Airblast.Orchard.50, col="purple", lty=4)
 lines(df_model_airblast$Distance_ft, df_model_airblast$orchard_dep, col = "orange", lty=5)
 lines(df_model_airblast$Distance_ft, df_model_airblast$orchard_ponddep, col = 74, lty =6)
-legend("topright", c("Peck", "Calc Outside", "Calc Inside", "Python", "Fortran", "GUI", "GUI Ponddep"), col = c("black", "blue", "green3", "red", "purple", "orange", 74), lty = c(1, 2, 2, 3, 4, 5,6), bg = "gray90", cex=1)
+legend("topright", c("Peck", "Calc Outside", "Calc Inside", "Python", "Fortran", "GUI Dep", "GUI Ponddep"), col = c("black", "blue", "green3", "red", "purple", "orange", 74), lty = c(1, 2, 2, 3, 4, 5,6), bg = "gray90", cex=1)
 ## Vineyard
-plot(df_airblast_excel$Distance..ft., df_airblast_excel$Vineyard, main = "Vineyard", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,300))
+plot(df_airblast_excel$Distance..ft., df_airblast_excel$Vineyard, main = "Vineyard", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,250))
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_vineyard_outside, col="blue", lty=2)
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_vineyard_inside, col = "green3", lty=2)
 lines(df_python$distance_ft, df_python$pond_airblast_vineyard, col = "red", lty=3)
 lines(df_fortran2py$distance_ft, df_fortran2py$Airblast.vineyard.50, col="purple", lty=4)
 lines(df_model_airblast$Distance_ft, df_model_airblast$vineyard_dep, col = "orange", lty=5)
 lines(df_model_airblast$Distance_ft, df_model_airblast$vineyard_ponddep, col = 74, lty =6)
-legend("topright", c("Peck", "Calc Outside", "Calc Inside", "Python", "Fortran", "GUI", "GUI Ponddep"), col = c("black", "blue", "green3", "red", "purple", "orange", 74), lty = c(1, 2, 2, 3, 4, 5,6), bg = "gray90", cex=1)
+legend("topright", c("Peck", "Calc Outside", "Calc Inside", "Python", "Fortran", "GUI Dep", "GUI Ponddep"), col = c("black", "blue", "green3", "red", "purple", "orange", 74), lty = c(1, 2, 2, 3, 4, 5,6), bg = "gray90", cex=1)
 ## Normal
-plot(df_airblast_excel$Distance..ft., df_airblast_excel$Normal, main = "Normal", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,300))
+plot(df_airblast_excel$Distance..ft., df_airblast_excel$Normal, main = "Normal", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,250))
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_normal_outside, col="blue", lty=2)
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_normal_inside, col = "green3", lty=2)
 lines(df_model_airblast$Distance_ft, df_model_airblast$normal_dep, col = "red", lty = 3)
 lines(df_model_airblast$Distance_ft, df_model_airblast$normal_ponddep, col = "purple", lty = 4)
-legend("topright", c("Peck", "Calc Outside", "Calc Inside", "GUI", "GUI Ponddep"), col = c("black", "blue", "green3", "red", "purple"), lty = c(1, 2, 2,3,4), bg = "gray90", cex = 1)
+legend("topright", c("Peck", "Calc Outside", "Calc Inside", "GUI Dep", "GUI Ponddep"), col = c("black", "blue", "green3", "red", "purple"), lty = c(1, 2, 2,3,4), bg = "gray90", cex = 1)
 ## Sparse
-plot(df_airblast_excel$Distance..ft., df_airblast_excel$Sparse, main = "Sparse", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,300))
+plot(df_airblast_excel$Distance..ft., df_airblast_excel$Sparse, main = "Sparse", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,250))
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_sparse_outside, col="blue", lty=2)
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_sparse_inside, col = "green3", lty=2)
 lines(df_model_airblast$Distance_ft, df_model_airblast$sparse_dep, col = "red", lty = 3)
 lines(df_model_airblast$Distance_ft, df_model_airblast$sparse_ponddep, col = "purple", lty = 4)
-legend("topright", c("Peck", "Calc Outside", "Calc Inside", "GUI", "GUI Ponddep"), col = c("black", "blue", "green3", "red", "purple"), lty = c(1, 2, 2,3,4), bg = "gray90", cex = 1)
+legend("topright", c("Peck", "Calc Outside", "Calc Inside", "GUI Dep", "GUI Ponddep"), col = c("black", "blue", "green3", "red", "purple"), lty = c(1, 2, 2,3,4), bg = "gray90", cex = 1)
 ## Dense
-plot(df_airblast_excel$Distance..ft., df_airblast_excel$Dense, main = "Dense", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,300))
+plot(df_airblast_excel$Distance..ft., df_airblast_excel$Dense, main = "Dense", type = "l", xlab = "Distance (ft)", ylab = "Fraction of Deposition", xlim=c(0,250))
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_dense_outside, col="blue", lty=2)
 lines(df_airblast_calc$distance_ft, df_airblast_calc$airblast_dense_inside, col = "green3", lty=2)
 lines(df_model_airblast$Distance_ft, df_model_airblast$dense_dep, col = "red", lty = 3)
 lines(df_model_airblast$Distance_ft, df_model_airblast$dense_ponddep, col = "purple", lty = 4)
-legend("topright", c("Peck", "Calc Outside", "Calc Inside", "GUI", "GUI Ponddep"), col = c("black", "blue", "green3", "red", "purple"), lty = c(1, 2, 2,3,4), bg = "gray90", cex = 1)
+legend("topright", c("Peck", "Calc Outside", "Calc Inside", "GUI Dep", "GUI Ponddep"), col = c("black", "blue", "green3", "red", "purple"), lty = c(1, 2, 2,3,4), bg = "gray90", cex = 1)
 ```
+
+***
+
+Questions
+=========
+* Which source is preferred to be implemented within the AgDrift web application in ubertool?
+* Why does the AgDrift model differ from the field study curves (Teske et al. 2003)?
+* Should all Tier I deposition curves come from the same source?
+* Why do the FORTRAN deposition curves differ from the AgDrift 2.1.1 model?
